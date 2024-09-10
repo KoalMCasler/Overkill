@@ -26,9 +26,9 @@ public class PlayerController : MonoBehaviour
     private InputAction fireAction;
     [Header("Stats")]
     [SerializeField]
-    private Stats playerStats;
+    public Stats playerStats;
     private Vector2 moveDirection;
-    public float fireForce = 20f;
+    public float fireForce = 30f;
     private bool hasFiredLeft;
     private bool hasFiredRight;
     public float activeShotDelay;
@@ -40,7 +40,6 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CheckForm();
         fireAction = playerInputs.FindAction("Fire", false);
         hasFiredLeft = false;
         hasFiredRight = true;
@@ -76,7 +75,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void CheckForm()
+    public void SetForm(string disredForm)
+    {
+        if(disredForm == "Blue" || disredForm == "Red" || disredForm == "Green")
+        {
+            playerStats.playerForm = disredForm;
+        }
+    }
+
+    public void CheckForm()
     {
         Destroy(activeBody);
         Destroy(activeWeapon);
@@ -148,5 +155,4 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-
 }

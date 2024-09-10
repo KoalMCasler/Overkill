@@ -16,5 +16,6 @@ public class Stats : ScriptableObject
     public float maxDamage;
     public float baseShotDelay;
     public float shotDelay;
+    public int killCount;
     public int upgradePoints;
 }
