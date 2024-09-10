@@ -8,6 +8,10 @@ public class GameManager : MonoBehaviour
     public static GameManager gameManager;
     [SerializeField]
     private UIManager uIManager;
+    [SerializeField]
+    public GameObject player;
+    [SerializeField]
+    private LevelManager levelManager;
     public enum GameState{MainMenu, Gameplay}
     public GameState gameState;
     void Awake()
@@ -25,13 +29,16 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(gameState == GameState.MainMenu)
+        {
+            player.SetActive(false);
+        }
     }
 
     public void ChangeGameState()
