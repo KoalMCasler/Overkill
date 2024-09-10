@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Object Referances")]
+    [SerializeField]
+    private GameObject body;
+    [SerializeField]
+    private GameObject weapon;
     // Start is called before the first frame update
     void Start()
     {
