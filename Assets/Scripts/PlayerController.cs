@@ -68,7 +68,8 @@ public class PlayerController : MonoBehaviour
     {
         // this moves the player indepented from aim direction
         rb.velocity = new Vector2(moveDirection.x * playerStats.moveSpeed, moveDirection.y * playerStats.moveSpeed);
-        weaponRb.velocity = new Vector2(moveDirection.x * playerStats.moveSpeed, moveDirection.y * playerStats.moveSpeed);
+        //weaponRb.velocity = new Vector2(moveDirection.x * playerStats.moveSpeed, moveDirection.y * playerStats.moveSpeed);
+        activeWeapon.transform.position = this.transform.position;
         Vector2 aimDirection = mousePosition - rb.position;
         
         // This horrible looking math is how the character stays looking at the mouse point

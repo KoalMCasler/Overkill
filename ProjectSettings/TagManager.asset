@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Confiner
   - Spawn
+  - Enemy
   layers:
   - Default
   - TransparentFX
