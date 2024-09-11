@@ -11,7 +11,6 @@ public class UIManager : MonoBehaviour
     public GameObject startMenu;
     public GameObject upgradeMenu;
     public GameObject runEndMenu;
-    public GameObject gameOverMenu;
     public GameObject creditsMenu;
     public Button loadButton;
     [Header("Upgrades Menu")]
@@ -62,7 +61,6 @@ public class UIManager : MonoBehaviour
         startMenu.SetActive(false);
         upgradeMenu.SetActive(false);
         runEndMenu.SetActive(false);
-        gameOverMenu.SetActive(false);
         creditsMenu.SetActive(false);
         mainMenu.SetActive(true);
     }
@@ -73,7 +71,6 @@ public class UIManager : MonoBehaviour
         hUDObject.SetActive(false);
         upgradeMenu.SetActive(false);
         runEndMenu.SetActive(false);
-        gameOverMenu.SetActive(false);
         mainMenu.SetActive(false);
         startMenu.SetActive(true);
     }
@@ -84,7 +81,6 @@ public class UIManager : MonoBehaviour
         hUDObject.SetActive(false);
         startMenu.SetActive(false);
         runEndMenu.SetActive(false);
-        gameOverMenu.SetActive(false);
         mainMenu.SetActive(false);
         upgradeMenu.SetActive(true);
     }
@@ -95,20 +91,8 @@ public class UIManager : MonoBehaviour
         hUDObject.SetActive(false);
         startMenu.SetActive(false);
         upgradeMenu.SetActive(false);
-        gameOverMenu.SetActive(false);
         mainMenu.SetActive(false);
         runEndMenu.SetActive(true);
-    }
-
-    public void SetUIGameOverMenu()
-    {
-        creditsMenu.SetActive(false);
-        hUDObject.SetActive(false);
-        startMenu.SetActive(false);
-        upgradeMenu.SetActive(false);
-        runEndMenu.SetActive(false);
-        mainMenu.SetActive(false);
-        gameOverMenu.SetActive(true);
     }
 
     public void SetUIGamePlay()
@@ -117,7 +101,6 @@ public class UIManager : MonoBehaviour
         startMenu.SetActive(false);
         upgradeMenu.SetActive(false);
         runEndMenu.SetActive(false);
-        gameOverMenu.SetActive(false);
         mainMenu.SetActive(false);
         hUDObject.SetActive(true);
     }
@@ -127,7 +110,6 @@ public class UIManager : MonoBehaviour
         startMenu.SetActive(false);
         upgradeMenu.SetActive(false);
         runEndMenu.SetActive(false);
-        gameOverMenu.SetActive(false);
         mainMenu.SetActive(false);
         hUDObject.SetActive(false);
         creditsMenu.SetActive(true);
