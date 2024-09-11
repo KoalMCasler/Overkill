@@ -4,13 +4,15 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
+using Unity.Mathematics;
 
 public class GameManager : MonoBehaviour
 {
 
     public static GameManager gameManager;
     [SerializeField]
-    private UIManager uIManager;
+    public UIManager uIManager;
     [SerializeField]
     public GameObject player;
     public PlayerController playerController;
@@ -18,6 +20,12 @@ public class GameManager : MonoBehaviour
     private LevelManager levelManager;
     public enum GameState{MainMenu, Gameplay}
     public GameState gameState;
+    private Stats loadedStats;
+    [Header("Run Statistics")]
+    public int killCount;
+    public float runTime;
+    public float roundBonus;
+    public float totalEarned;
     void Awake()
     {
         if(gameManager != null)
@@ -30,7 +38,16 @@ public class GameManager : MonoBehaviour
             gameManager = this;
         }
         playerController = player.GetComponent<PlayerController>();
+        loadedStats = ScriptableObject.CreateInstance<Stats>();
         ChangeGameState();
+    }
+
+    void Update()
+    {
+        if(gameState == GameState.Gameplay && playerController.playerStats.isAlive)
+        {
+            runTime += Time.deltaTime;
+        }
     }
 
     public void ChangeGameState()
@@ -51,6 +68,8 @@ public class GameManager : MonoBehaviour
     void Gameplay()
     {
         player.SetActive(true);
+        playerController.playerStats.isAlive = true;
+        runTime = 0;
         uIManager.SetUIGamePlay();
     }
 
@@ -59,42 +78,49 @@ public class GameManager : MonoBehaviour
         if(CheckforSave())
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + "/playerInfo.dat", FileMode.Open);
-            Stats data = (Stats)bf.Deserialize(file);
+            FileStream file = File.Open(Application.persistentDataPath + "/playerInfo.json", FileMode.Open);
             
-            Stats playerSave = player.GetComponent<PlayerController>().playerStats;
+            Stats playerSave = JsonUtility.FromJson<Stats>((string)bf.Deserialize(file));
+            
+            playerSave = player.GetComponent<PlayerController>().playerStats;
+            
+            string json = JsonUtility.ToJson(playerSave);
 
-            bf.Serialize(file, data);
-            file.Close();
+            bf.Serialize(file, json);
+            file.Close();   
         }
         else
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Create(Application.persistentDataPath + "/playerInfo.dat");
+            FileStream file = File.Create(Application.persistentDataPath + "/playerInfo.json");
 
             Stats playerSave = player.GetComponent<PlayerController>().playerStats;
+            string json = JsonUtility.ToJson(playerSave);
 
-
-            bf.Serialize(file, playerSave);
+            bf.Serialize(file, json);
             file.Close();   
         }
     }
 
     public bool CheckforSave()
     {
-        bool doseSaveExisit = File.Exists(Application.persistentDataPath + "/playerInfo.dat");
+        bool doseSaveExisit = File.Exists(Application.persistentDataPath + "/playerInfo.json");
         return doseSaveExisit;
     }
 
     public void Load()
     {
-        if(File.Exists(Application.persistentDataPath + "/playerInfo.dat"))
+        if(File.Exists(Application.persistentDataPath + "/playerInfo.json"))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + "/playerInfo.dat", FileMode.Open);
-            Stats playerSave = (Stats)bf.Deserialize(file);
+            FileStream file = File.Open(Application.persistentDataPath + "/playerInfo.json", FileMode.Open);
+
+            string json = (string)bf.Deserialize(file);
+            
             file.Close();
-            gameManager.player.GetComponent<PlayerController>().playerStats = playerSave;
+            JsonUtility.FromJsonOverwrite(json, loadedStats);
+            gameManager.player.GetComponent<PlayerController>().playerStats = loadedStats;
+
         }
     }
 
@@ -112,6 +138,7 @@ public class GameManager : MonoBehaviour
         {
             playerController.playerStats.baseMoveSpeed += .5f;
         }
+        playerController.playerStats.upgradePoints -= 100;
     }
 
     public void QuitGame()
@@ -119,5 +146,11 @@ public class GameManager : MonoBehaviour
         //Debug line to test quit function in editor
         //UnityEditor.EditorApplication.isPlaying = false;
         Application.Quit();
+    }
+
+    public void CalculateResults()
+    {
+        totalEarned = (killCount * 5) + runTime + -roundBonus;
+        playerController.playerStats.upgradePoints = totalEarned;
     }
 }

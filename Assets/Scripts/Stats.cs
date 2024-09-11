@@ -6,6 +6,7 @@ using UnityEngine;
 public class Stats : ScriptableObject
 {
     public string playerForm;
+    public bool isAlive;
     public int maxHP;
     public float currentHP;
     public float maxMoveSpeed;
@@ -17,5 +18,5 @@ public class Stats : ScriptableObject
     public float baseShotDelay;
     public float shotDelay;
     public int killCount;
-    public int upgradePoints;
+    public float upgradePoints;
 }

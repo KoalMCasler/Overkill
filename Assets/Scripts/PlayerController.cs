@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private GameObject projectile;
     public InputActionAsset playerInputs;
     private InputAction fireAction;
+    public GameManager gameManager;
     [Header("Stats")]
     [SerializeField]
     public Stats playerStats;
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         rb = this.GetComponent<Rigidbody2D>();
+        gameManager = GameManager.gameManager;
     }
     // Start is called before the first frame update
     void Start()
@@ -50,13 +52,17 @@ public class PlayerController : MonoBehaviour
     {
         //Mouse input
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        CheckForDeath();
     }
 
     void OnMove(InputValue movementValue)
     {
-        //Movement logic
-        Vector2 moveVector2 = movementValue.Get<Vector2>();
-        moveDirection = moveVector2;
+        if(playerStats.isAlive)
+        {
+            //Movement logic
+            Vector2 moveVector2 = movementValue.Get<Vector2>();
+            moveDirection = moveVector2;
+        }
     }
     private void FixedUpdate()
     {
@@ -69,7 +75,7 @@ public class PlayerController : MonoBehaviour
         float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;
         weaponRb.rotation = aimAngle;   
 
-        if(fireAction.IsPressed())
+        if(fireAction.IsPressed() && playerStats.isAlive)
         {
             FireWeapon();
         }
@@ -83,6 +89,34 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void LoadForm()
+    {
+        if(playerStats.playerForm == "Blue" && activeBody == null && activeWeapon == null)
+        {
+            activeBody = Instantiate(bodys[0], this.transform);
+            activeWeapon = Instantiate(weapons[0], this.transform);
+            firePoints[0] = activeWeapon.transform.GetChild(0);
+            firePoints[1] = activeWeapon.transform.GetChild(1);
+        }
+        else if(playerStats.playerForm == "Green" && activeBody == null && activeWeapon == null)
+        {
+            activeBody = Instantiate(bodys[1], this.transform);
+            activeWeapon = Instantiate(weapons[1], this.transform);
+            firePoints[0] = activeWeapon.transform.GetChild(0);
+        }
+        else if(playerStats.playerForm == "Red" && activeBody == null && activeWeapon == null)
+        {
+            activeBody = Instantiate(bodys[2], this.transform);
+            activeWeapon = Instantiate(weapons[2], this.transform);
+            firePoints[0] = activeWeapon.transform.GetChild(0);
+        }
+        playerStats.shotDelay = playerStats.baseShotDelay;
+        playerStats.damage = playerStats.baseDamage;
+        playerStats.moveSpeed = playerStats.baseMoveSpeed;
+        weaponRb = activeWeapon.GetComponent<Rigidbody2D>();
+        playerStats.currentHP = playerStats.maxHP;
+    }
+
     public void CheckForm()
     {
         Destroy(activeBody);
@@ -93,7 +127,7 @@ public class PlayerController : MonoBehaviour
             activeWeapon = Instantiate(weapons[0], this.transform);
             firePoints[0] = activeWeapon.transform.GetChild(0);
             firePoints[1] = activeWeapon.transform.GetChild(1);
-            playerStats.baseShotDelay = .5f;
+            playerStats.baseShotDelay = .25f;
             playerStats.baseDamage = .75f;
             playerStats.baseMoveSpeed = 6f;
         }
@@ -102,7 +136,7 @@ public class PlayerController : MonoBehaviour
             activeBody = Instantiate(bodys[1], this.transform);
             activeWeapon = Instantiate(weapons[1], this.transform);
             firePoints[0] = activeWeapon.transform.GetChild(0);
-            playerStats.baseShotDelay = .75f;
+            playerStats.baseShotDelay = .5f;
             playerStats.baseDamage = 1f;
             playerStats.baseMoveSpeed = 5f;
         }
@@ -111,10 +145,11 @@ public class PlayerController : MonoBehaviour
             activeBody = Instantiate(bodys[2], this.transform);
             activeWeapon = Instantiate(weapons[2], this.transform);
             firePoints[0] = activeWeapon.transform.GetChild(0);
-            playerStats.baseShotDelay = 1f;
+            playerStats.baseShotDelay = .75f;
             playerStats.baseDamage = 1.25f;
             playerStats.baseMoveSpeed = 4f;
         }
+        playerStats.maxHP = 100;
         playerStats.shotDelay = playerStats.baseShotDelay;
         playerStats.damage = playerStats.baseDamage;
         playerStats.moveSpeed = playerStats.baseMoveSpeed;
@@ -152,6 +187,17 @@ public class PlayerController : MonoBehaviour
                 Destroy(Bullet, 3f);
             }
             activeShotDelay = playerStats.shotDelay;
+        }
+    }
+
+    void CheckForDeath()
+    {
+        if(playerStats.currentHP <= 0 && playerStats.isAlive)
+        {
+            playerStats.isAlive = false;
+            gameManager.roundBonus = playerStats.currentHP;
+            
+            gameManager.uIManager.SetUIRunEndMenu();
         }
     }
     

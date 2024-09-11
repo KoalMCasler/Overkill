@@ -347,7 +347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &38568776
 RectTransform:
   m_ObjectHideFlags: 0
@@ -548,7 +548,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1.4421997, y: 77.712524}
+  m_AnchoredPosition: {x: -1.4421387, y: 77.712524}
   m_SizeDelta: {x: -90.178, y: -548.0817}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &119502723
@@ -1215,6 +1215,10 @@ MonoBehaviour:
   playerController: {fileID: 4051089367124598466}
   levelManager: {fileID: 1604594508}
   gameState: 0
+  killCount: 0
+  runTime: 0
+  roundBonus: 0
+  totalEarned: 0
 --- !u!4 &505378438
 Transform:
   m_ObjectHideFlags: 0
@@ -1510,7 +1514,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 580342793}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 505378437}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: IncreaseStat
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Damage
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &580342793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1564,7 +1580,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &617483148
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3316,13 +3332,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 15289740}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: SetUIUpgradeMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4453,7 +4469,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1151918601}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 505378437}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: IncreaseStat
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Speed
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1151918601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5464,7 +5492,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1414068142}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 505378437}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: IncreaseStat
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Armor
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1414068142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6873,7 +6913,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -11.538574, y: 21.3071}
+  m_AnchoredPosition: {x: -11.538574, y: 21.307129}
   m_SizeDelta: {x: -1026.9321, y: -60.5774}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1922987813
@@ -7646,8 +7686,9 @@ MonoBehaviour:
   - {fileID: 0}
   projectile: {fileID: 5652813441174167647, guid: c70cd5368dcf8b34599a8447616d1b53, type: 3}
   playerInputs: {fileID: -944628639613478452, guid: 324d19a931238e347a1ee4c0a7494aa8, type: 3}
+  gameManager: {fileID: 505378437}
   playerStats: {fileID: 11400000, guid: 3cf0f75fa995eaa4ab374e903f884b5a, type: 2}
-  fireForce: 20
+  fireForce: 30
   activeShotDelay: 0
 --- !u!50 &5335452832712988572
 Rigidbody2D:
