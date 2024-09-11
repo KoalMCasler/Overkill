@@ -8,31 +8,39 @@ public class EnemySpawner : MonoBehaviour
     public GameObject[] enemies = new GameObject[9];
     public GameManager gameManager;
     public float spawnTimer;
-    public int spanwDelay;
+    public float spanwDelay;
     public int spanwRoll;
     // Start is called before the first frame update
     void Start()
     {
-        spanwRoll = 0;
-        if(spanwDelay < 5)
+        if(spanwDelay != 5)
         {
             spanwDelay = 5;
         }
+        spanwRoll = 0;
         gameManager = FindObjectOfType<GameManager>();
-        SpawnRandomEnemy();
-        SpawnRandomEnemy();
-        SpawnRandomEnemy();
-        SpawnRandomEnemy();
+        for(int i = 0; i < 8; i++)
+        {
+            SpawnRandomEnemy();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         spawnTimer += Time.deltaTime;
-        if(spawnTimer >= spanwDelay)
+        if(spawnTimer >= spanwDelay && GameManager.gameManager.playerController.playerStats.isAlive)
         {
             SpawnRandomEnemy();
             spawnTimer = 0;
+        }
+        if(gameManager.runTime > 60 && gameManager.runTime < 120)
+        {
+            spanwDelay = 3;
+        }
+        else if(gameManager.runTime > 120)
+        {
+            spanwDelay = 1.5f;
         }
     }
 
@@ -41,19 +49,20 @@ public class EnemySpawner : MonoBehaviour
         int enemyRoll = 0;
         if(gameManager.runTime < 60)
         {
-            enemyRoll = Random.Range(0,2);
+            enemyRoll = Random.Range(0,3);
         }
         else if(gameManager.runTime < 120 && gameManager.runTime > 60)
         {
-            enemyRoll = Random.Range(3,5);
+            enemyRoll = Random.Range(3, 6);
         }
         else if(gameManager.runTime < 180)
         {
             enemyRoll = Random.Range(7,9);
         }
+        //Debug.Log(enemyRoll);
         GameObject enemiy = Instantiate(enemies[enemyRoll], spawnPoints[spanwRoll].position, spawnPoints[spanwRoll].rotation);
         spanwRoll += 1;
-        if(spanwRoll > 8)
+        if(spanwRoll >= 8)
         {
             spanwRoll = 0;
         }

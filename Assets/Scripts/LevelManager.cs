@@ -21,7 +21,6 @@ public class LevelManager : MonoBehaviour
         {
             gameManager.gameState = GameManager.GameState.Gameplay;
             gameManager.ChangeGameState();
-            gameManager.player.GetComponent<PlayerController>().playerStats.killCount = 0;
             gameManager.playerController.LoadForm();
         }
         else if(sceneName == "MainMenu")

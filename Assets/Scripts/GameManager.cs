@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public UIManager uIManager;
     [SerializeField]
+    public SoundManager soundManager;
+    [SerializeField]
     public GameObject player;
     public PlayerController playerController;
     [SerializeField]
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour
         {
             runTime += Time.deltaTime;
         }
+        playerController.playerStats.killCount = killCount;
     }
 
     public void ChangeGameState()
@@ -70,36 +73,21 @@ public class GameManager : MonoBehaviour
         player.SetActive(true);
         playerController.playerStats.isAlive = true;
         runTime = 0;
+        killCount = 0;
+        playerController.playerStats.killCount = 0;
         uIManager.SetUIGamePlay();
     }
 
     public void Save()
     {
-        if(CheckforSave())
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + "/playerInfo.json", FileMode.Open);
-            
-            Stats playerSave = JsonUtility.FromJson<Stats>((string)bf.Deserialize(file));
-            
-            playerSave = player.GetComponent<PlayerController>().playerStats;
-            
-            string json = JsonUtility.ToJson(playerSave);
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/playerInfo.json");
 
-            bf.Serialize(file, json);
-            file.Close();   
-        }
-        else
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Create(Application.persistentDataPath + "/playerInfo.json");
+        Stats playerSave = player.GetComponent<PlayerController>().playerStats;
+        string json = JsonUtility.ToJson(playerSave);
 
-            Stats playerSave = player.GetComponent<PlayerController>().playerStats;
-            string json = JsonUtility.ToJson(playerSave);
-
-            bf.Serialize(file, json);
-            file.Close();   
-        }
+        bf.Serialize(file, json);
+        file.Close();   
     }
 
     public bool CheckforSave()
@@ -150,7 +138,8 @@ public class GameManager : MonoBehaviour
 
     public void CalculateResults()
     {
+        roundBonus = playerController.playerStats.currentHP;
         totalEarned = (killCount * 5) + runTime + -roundBonus;
-        playerController.playerStats.upgradePoints = totalEarned;
+        playerController.playerStats.upgradePoints += totalEarned;
     }
 }

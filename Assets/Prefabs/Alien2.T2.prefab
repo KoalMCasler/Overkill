@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 1597146614721634768}
   - component: {fileID: 6437956718137705859}
   - component: {fileID: 4088889385486445597}
-  m_Layer: 0
+  - component: {fileID: 6265122492118167390}
+  m_Layer: 3
   m_Name: Alien2.T2
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -84,6 +85,8 @@ MonoBehaviour:
   rotation: {x: 0, y: 0, z: 0, w: 0}
   rotationSpeed: 5
   player: {fileID: 0}
+  enemyAnim: {fileID: 0}
+  alienBoom: {fileID: 5833590910463308222, guid: f0fe6666004730f4ab80076be770a183, type: 3}
 --- !u!58 &4088889385486445597
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -119,6 +122,27 @@ CircleCollider2D:
   m_Offset: {x: 0.0048832893, y: -0.058595657}
   serializedVersion: 2
   m_Radius: 0.939466
+--- !u!95 &6265122492118167390
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7388364590458626159}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a52f3243c7aec7d47a294e1ddce18c7f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7760830141270842637
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,7 +153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6439346865602396393}
   - component: {fileID: 2752015608834216419}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}

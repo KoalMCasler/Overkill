@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -18,12 +19,19 @@ public class UIManager : MonoBehaviour
     public Button armorUpButton;
     public Button damageUpButton;
     public Button speedUpButton;
+    public TextMeshProUGUI pointsDisplay;
     [Header("HUD")]
     public GameObject hUDObject;
     public TextMeshProUGUI healthUI;
     public Slider healthSlider;
+    public TextMeshProUGUI killCountHUD;
+    public TextMeshProUGUI runTimeHUD;
     public GameManager gameManager;
-
+    [Header("Run Results")]
+    public TextMeshProUGUI runTimeText;
+    public TextMeshProUGUI killCountText;
+    public TextMeshProUGUI bonusText;
+    public TextMeshProUGUI totalText;
     void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
@@ -43,6 +51,13 @@ public class UIManager : MonoBehaviour
             healthUI.text = string.Format("{0}/{1}",gameManager.player.GetComponent<PlayerController>().playerStats.currentHP,gameManager.player.GetComponent<PlayerController>().playerStats.maxHP);
             healthSlider.minValue = 0;
             healthSlider.maxValue = gameManager.player.GetComponent<PlayerController>().playerStats.maxHP;
+            killCountHUD.text = string.Format("Kills: {0}", gameManager.killCount);
+            var timespan = TimeSpan.FromSeconds(gameManager.runTime);
+            runTimeHUD.text = string.Format("Run Time: {0}", timespan.ToString(@"mm\:ss"));
+        }
+        if(runEndMenu.activeSelf)
+        {
+            UpdateResults();
         }
         if(mainMenu.activeSelf)
         {
@@ -52,6 +67,7 @@ public class UIManager : MonoBehaviour
         {
             CanYouAfordTheUpgrade();
             UpdateStats();
+            pointsDisplay.text = string.Format("Points = {0:.}", gameManager.playerController.playerStats.upgradePoints);
         }
     }
 
@@ -63,6 +79,8 @@ public class UIManager : MonoBehaviour
         runEndMenu.SetActive(false);
         creditsMenu.SetActive(false);
         mainMenu.SetActive(true);
+        gameManager.soundManager.music.clip = gameManager.soundManager.mainMusic;
+        gameManager.soundManager.music.Play();
     }
 
     public void SetUIStartMenu()
@@ -93,6 +111,9 @@ public class UIManager : MonoBehaviour
         upgradeMenu.SetActive(false);
         mainMenu.SetActive(false);
         runEndMenu.SetActive(true);
+        gameManager.CalculateResults();
+        gameManager.soundManager.music.clip = gameManager.soundManager.mainMusic;
+        gameManager.soundManager.music.Play();
     }
 
     public void SetUIGamePlay()
@@ -103,6 +124,8 @@ public class UIManager : MonoBehaviour
         runEndMenu.SetActive(false);
         mainMenu.SetActive(false);
         hUDObject.SetActive(true);
+        gameManager.soundManager.music.clip = gameManager.soundManager.gameMusic;
+        gameManager.soundManager.music.Play();
     }
 
     public void SetUICredits()
@@ -131,6 +154,15 @@ public class UIManager : MonoBehaviour
         {
             damageUpButton.interactable = false;
         }
+    }
+
+    public void UpdateResults()
+    {
+        var timespan = TimeSpan.FromSeconds(gameManager.runTime);
+        runTimeText.text = string.Format("Run Time = {0}", timespan.ToString(@"mm\:ss"));
+        killCountText.text = string.Format("Kills = {0}",gameManager.killCount);
+        bonusText.text = string.Format("Bonus = {0}", -gameManager.roundBonus);
+        totalText.text = string.Format("TOTAL = {0:.}",gameManager.totalEarned);
     }
 
     void CanYouAfordTheUpgrade()

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6342318430938476177}
   - component: {fileID: 792934535261993078}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4069612591324397311}
   - component: {fileID: 4374945696884031162}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5325541481745494784}
   - component: {fileID: 975214086189020942}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8972385665662290736}
   - component: {fileID: 8867305392914055567}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,7 +348,8 @@ GameObject:
   - component: {fileID: 4809285189635914071}
   - component: {fileID: 314513988714389523}
   - component: {fileID: 7806729215231639146}
-  m_Layer: 0
+  - component: {fileID: -3580986543170413582}
+  m_Layer: 3
   m_Name: Alien3.T1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -419,13 +420,15 @@ MonoBehaviour:
   health: 0
   maxHealth: 8
   moveSpeed: 3
-  damage: 10
+  damage: 12
   rb: {fileID: 0}
   directionToTarget: {x: 0, y: 0}
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
   rotation: {x: 0, y: 0, z: 0, w: 0}
   rotationSpeed: 5
   player: {fileID: 0}
+  enemyAnim: {fileID: 0}
+  alienBoom: {fileID: 5833590910463308222, guid: f0fe6666004730f4ab80076be770a183, type: 3}
 --- !u!58 &7806729215231639146
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -461,6 +464,27 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.05581093}
   serializedVersion: 2
   m_Radius: 1.5045943
+--- !u!95 &-3580986543170413582
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7309372103414641850}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a52f3243c7aec7d47a294e1ddce18c7f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7471153965766900734
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,7 +495,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2601719887460958435}
   - component: {fileID: 1181657769088157699}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -555,7 +579,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4839814151913475768}
   - component: {fileID: 3614695152294875161}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -639,7 +663,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1259978957263801857}
   - component: {fileID: 16355130972459802}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

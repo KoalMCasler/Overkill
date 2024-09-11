@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     public InputActionAsset playerInputs;
     private InputAction fireAction;
     public GameManager gameManager;
+    public GameObject playerBoom;
     [Header("Stats")]
     [SerializeField]
     public Stats playerStats;
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
         fireAction = playerInputs.FindAction("Fire", false);
         hasFiredLeft = false;
         hasFiredRight = true;
+        rb.velocity = Vector2.zero;
     }
 
     // Update is called once per frame
@@ -66,19 +68,22 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        // this moves the player indepented from aim direction
-        rb.velocity = new Vector2(moveDirection.x * playerStats.moveSpeed, moveDirection.y * playerStats.moveSpeed);
-        //weaponRb.velocity = new Vector2(moveDirection.x * playerStats.moveSpeed, moveDirection.y * playerStats.moveSpeed);
-        activeWeapon.transform.position = this.transform.position;
-        Vector2 aimDirection = mousePosition - rb.position;
-        
-        // This horrible looking math is how the character stays looking at the mouse point
-        float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;
-        weaponRb.rotation = aimAngle;   
-
-        if(fireAction.IsPressed() && playerStats.isAlive)
+        if(playerStats.isAlive)
         {
-            FireWeapon();
+            // this moves the player indepented from aim direction
+            rb.velocity = new Vector2(moveDirection.x * playerStats.moveSpeed, moveDirection.y * playerStats.moveSpeed);
+            //weaponRb.velocity = new Vector2(moveDirection.x * playerStats.moveSpeed, moveDirection.y * playerStats.moveSpeed);
+            activeWeapon.transform.position = this.transform.position;
+            Vector2 aimDirection = mousePosition - rb.position;
+            
+            // This horrible looking math is how the character stays looking at the mouse point
+            float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;
+            weaponRb.rotation = aimAngle;   
+
+            if(fireAction.IsPressed())
+            {
+                FireWeapon();
+            }
         }
     }
 
@@ -150,6 +155,7 @@ public class PlayerController : MonoBehaviour
             playerStats.baseDamage = 1.25f;
             playerStats.baseMoveSpeed = 4f;
         }
+        playerStats.upgradePoints = 0;
         playerStats.maxHP = 100;
         playerStats.shotDelay = playerStats.baseShotDelay;
         playerStats.damage = playerStats.baseDamage;
@@ -168,6 +174,7 @@ public class PlayerController : MonoBehaviour
                 {
                     GameObject Bullet = Instantiate(projectile, firePoints[0].position, firePoints[0].rotation);
                     Bullet.GetComponent<Rigidbody2D>().AddForce(firePoints[0].up * fireForce, ForceMode2D.Impulse);
+                    gameManager.soundManager.sFX.PlayOneShot(gameManager.soundManager.shootSFX);
                     Destroy(Bullet, 3f);
                     hasFiredLeft = true;
                     hasFiredRight = false;
@@ -176,6 +183,7 @@ public class PlayerController : MonoBehaviour
                 {
                     GameObject Bullet = Instantiate(projectile, firePoints[1].position, firePoints[1].rotation);
                     Bullet.GetComponent<Rigidbody2D>().AddForce(firePoints[1].up * fireForce, ForceMode2D.Impulse);
+                    gameManager.soundManager.sFX.PlayOneShot(gameManager.soundManager.shootSFX);
                     Destroy(Bullet, 3f);
                     hasFiredLeft = false;
                     hasFiredRight = true;
@@ -185,6 +193,7 @@ public class PlayerController : MonoBehaviour
             {
                 GameObject Bullet = Instantiate(projectile, firePoints[0].position, firePoints[0].rotation);
                 Bullet.GetComponent<Rigidbody2D>().AddForce(firePoints[0].up * fireForce, ForceMode2D.Impulse);
+                gameManager.soundManager.sFX.PlayOneShot(gameManager.soundManager.shootSFX);
                 Destroy(Bullet, 3f);
             }
             activeShotDelay = playerStats.shotDelay;
@@ -196,9 +205,12 @@ public class PlayerController : MonoBehaviour
         if(playerStats.currentHP <= 0 && playerStats.isAlive)
         {
             playerStats.isAlive = false;
-            gameManager.roundBonus = playerStats.currentHP;
-            
             gameManager.uIManager.SetUIRunEndMenu();
+            gameManager.soundManager.sFX.PlayOneShot(gameManager.soundManager.deathSFX);
+            Destroy(activeBody);
+            Destroy(activeWeapon);
+            GameObject particles = Instantiate(playerBoom, this.transform.position, this.transform.rotation);
+            Destroy(particles,.5f);
         }
     }
     

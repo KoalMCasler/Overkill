@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3597437932268299046}
   - component: {fileID: 3913107959438990168}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,8 @@ GameObject:
   - component: {fileID: 7510743436556050803}
   - component: {fileID: 8404713957653475099}
   - component: {fileID: 5194502722217720444}
-  m_Layer: 0
+  - component: {fileID: 8052376602969167339}
+  m_Layer: 3
   m_Name: Alien1.T3
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -168,6 +169,8 @@ MonoBehaviour:
   rotation: {x: 0, y: 0, z: 0, w: 0}
   rotationSpeed: 5
   player: {fileID: 0}
+  enemyAnim: {fileID: 0}
+  alienBoom: {fileID: 5833590910463308222, guid: f0fe6666004730f4ab80076be770a183, type: 3}
 --- !u!58 &5194502722217720444
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -203,3 +206,24 @@ CircleCollider2D:
   m_Offset: {x: 0.008397102, y: 0.123167634}
   serializedVersion: 2
   m_Radius: 0.9170904
+--- !u!95 &8052376602969167339
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8355131840980506736}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a52f3243c7aec7d47a294e1ddce18c7f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

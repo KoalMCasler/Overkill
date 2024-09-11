@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3441555208309179755}
   - component: {fileID: 6845339230419112420}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6204524005996920320}
   - component: {fileID: 3910207796023827298}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7049671952669439285}
   - component: {fileID: 6951374960677689502}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1573864572544330834}
   - component: {fileID: 9029902659835703504}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,7 +346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6033972439441512801}
   - component: {fileID: 7507890371960886112}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -432,7 +432,8 @@ GameObject:
   - component: {fileID: 5594029892707464060}
   - component: {fileID: 6810541167763284937}
   - component: {fileID: 8805572801116951718}
-  m_Layer: 0
+  - component: {fileID: -4333403088646058599}
+  m_Layer: 3
   m_Name: Alien3.T3
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -510,6 +511,8 @@ MonoBehaviour:
   rotation: {x: 0, y: 0, z: 0, w: 0}
   rotationSpeed: 5
   player: {fileID: 0}
+  enemyAnim: {fileID: 0}
+  alienBoom: {fileID: 5833590910463308222, guid: f0fe6666004730f4ab80076be770a183, type: 3}
 --- !u!58 &8805572801116951718
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -545,6 +548,27 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.05581093}
   serializedVersion: 2
   m_Radius: 1.5045943
+--- !u!95 &-4333403088646058599
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5097513330637096265}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a52f3243c7aec7d47a294e1ddce18c7f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5156709875117578591
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,7 +579,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4295126458546022128}
   - component: {fileID: 3374113077030719059}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -639,7 +663,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2019818128286507147}
   - component: {fileID: 3360564783947074016}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg3
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -14,20 +14,24 @@ public class EnemyAI : MonoBehaviour
     public Quaternion rotation;
     public float rotationSpeed;
     public GameObject player;
+    public Animator enemyAnim;
+    public GameObject alienBoom;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameManager.gameManager.player;
         health = maxHealth;
-        rotationSpeed = 5;
+        rotationSpeed = 10;
         rb = this.GetComponent<Rigidbody2D>();
+        enemyAnim = this.GetComponent<Animator>();
         RotateTowardsTarget();
     }
 
     // Update is called once per frame
     void Update()
     {
+        CheckStatus();
         RotateTowardsTarget();
         Move();
     }
@@ -37,13 +41,13 @@ public class EnemyAI : MonoBehaviour
         if(other.gameObject.CompareTag("Player"))
         {
             other.gameObject.GetComponent<PlayerController>().playerStats.currentHP -= damage;
-            rb.AddForce(-transform.up * 1000, ForceMode2D.Impulse);
+            rb.AddForce(-transform.up * 10000);
         }
     }
 
     void RotateTowardsTarget()
     {
-        Debug.Log("Rotating to target");
+        //Debug.Log("Rotating to target");
         Vector2 targetDirecion = player.transform.position - transform.position;
         directionToTarget = targetDirecion.normalized;
 
@@ -56,6 +60,21 @@ public class EnemyAI : MonoBehaviour
     {
         RotateTowardsTarget();
         rb.velocity = transform.up * moveSpeed;
+    }
+
+    void CheckStatus()
+    {
+        if(health <= 0)
+        {
+            GameManager.gameManager.killCount += 1;
+            Destroy(this.gameObject);
+        }
+    }
+
+    void OnDestroy()
+    {
+        GameObject particles = Instantiate(alienBoom, this.transform.position, this.transform.rotation);
+        Destroy(particles,.5f);
     }
 
 
