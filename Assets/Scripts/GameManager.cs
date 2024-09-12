@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour
         uIManager.SetUIMainMenu();
         soundManager.music.clip = soundManager.mainMusic;
         soundManager.music.Play();
+        soundManager.SetMusicVolume("MainMenu");
     }
 
     void Gameplay()
@@ -80,6 +81,7 @@ public class GameManager : MonoBehaviour
         uIManager.SetUIGamePlay();
         soundManager.music.clip = soundManager.gameMusic;
         soundManager.music.Play();
+        soundManager.SetMusicVolume("Gameplay");
     }
 
     public void Save()
@@ -159,6 +161,12 @@ public class GameManager : MonoBehaviour
             roundBonus = 2f;
         }
         totalEarned = ((killCount * 5) + runTime) * roundBonus;
+
+        if(runTime > playerController.playerStats.bestRun)
+        {
+            playerController.playerStats.bestRun = runTime;
+        }
+
         playerController.playerStats.upgradePoints += totalEarned;
     }
 }

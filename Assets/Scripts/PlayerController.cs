@@ -200,6 +200,7 @@ public class PlayerController : MonoBehaviour
             playerStats.baseMoveSpeed = 4.5f;
             fireForce = 50f;
         }
+        playerStats.bestRun = 0;
         playerStats.upgradePoints = 0;
         playerStats.maxHP = 75;
         playerStats.shotDelay = playerStats.baseShotDelay;
@@ -251,7 +252,7 @@ public class PlayerController : MonoBehaviour
         {
             playerStats.isAlive = false;
             gameManager.uIManager.SetUIRunEndMenu();
-            gameManager.soundManager.sFX.PlayOneShot(gameManager.soundManager.deathSFX);
+            gameManager.soundManager.sFX.PlayOneShot(gameManager.soundManager.deathSFX, 1f);
             Destroy(activeBody);
             Destroy(activeWeapon);
             GameObject particles = Instantiate(playerBoom, this.transform.position, this.transform.rotation);

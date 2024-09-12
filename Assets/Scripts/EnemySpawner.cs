@@ -53,11 +53,11 @@ public class EnemySpawner : MonoBehaviour
         }
         else if(gameManager.runTime < 120 && gameManager.runTime > 60)
         {
-            enemyRoll = Random.Range(3, 6);
+            enemyRoll = Random.Range(3,6);
         }
-        else if(gameManager.runTime < 180)
+        else if(gameManager.runTime > 120)
         {
-            enemyRoll = Random.Range(7,9);
+            enemyRoll = Random.Range(6,9);
         }
         //Debug.Log(enemyRoll);
         GameObject enemiy = Instantiate(enemies[enemyRoll], spawnPoints[spanwRoll].position, spawnPoints[spanwRoll].rotation);

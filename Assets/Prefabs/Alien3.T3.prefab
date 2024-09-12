@@ -504,7 +504,7 @@ MonoBehaviour:
   health: 0
   maxHealth: 32
   moveSpeed: 8
-  damage: 25
+  damage: 33
   rb: {fileID: 0}
   directionToTarget: {x: 0, y: 0}
   targetRotation: {x: 0, y: 0, z: 0, w: 0}

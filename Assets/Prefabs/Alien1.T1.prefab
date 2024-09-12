@@ -77,7 +77,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   maxHealth: 3
-  moveSpeed: 3
+  moveSpeed: 5
   damage: 12
   rb: {fileID: 0}
   directionToTarget: {x: 0, y: 0}

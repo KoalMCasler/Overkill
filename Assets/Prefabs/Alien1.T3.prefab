@@ -160,9 +160,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  maxHealth: 12
-  moveSpeed: 5
-  damage: 25
+  maxHealth: 9
+  moveSpeed: 8
+  damage: 33
   rb: {fileID: 0}
   directionToTarget: {x: 0, y: 0}
   targetRotation: {x: 0, y: 0, z: 0, w: 0}

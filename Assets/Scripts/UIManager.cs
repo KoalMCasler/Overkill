@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour
     public Button speedUpButton;
     public TextMeshProUGUI pointsDisplay;
     public bool canUpgrade;
+    public TextMeshProUGUI bestTime;
     [Header("HUD")]
     public GameObject hUDObject;
     public TextMeshProUGUI healthUI;
@@ -63,6 +64,7 @@ public class UIManager : MonoBehaviour
             killCountHUD.text = string.Format("Kills: {0}", gameManager.killCount);
             var timespan = TimeSpan.FromSeconds(gameManager.runTime);
             runTimeHUD.text = string.Format("Run Time: {0}", timespan.ToString(@"mm\:ss"));
+
         }
         if(runEndMenu.activeSelf)
         {
@@ -92,6 +94,7 @@ public class UIManager : MonoBehaviour
         mainMenu.SetActive(true);
         gameManager.soundManager.music.clip = gameManager.soundManager.mainMusic;
         gameManager.soundManager.music.Play();
+        gameManager.soundManager.SetMusicVolume("MainMenu");
         Time.timeScale = 1f;
     }
 
@@ -119,6 +122,9 @@ public class UIManager : MonoBehaviour
         mainMenu.SetActive(false);
         upgradeMenu.SetActive(true);
         Time.timeScale = 1f;
+        gameManager.soundManager.music.clip = gameManager.soundManager.mainMusic;
+        gameManager.soundManager.music.Play();
+        gameManager.soundManager.SetMusicVolume("MainMenu");
     }
 
     public void SetUIRunEndMenu()
@@ -175,6 +181,8 @@ public class UIManager : MonoBehaviour
 
     public void UpdateStats()
     {
+        var timespan = TimeSpan.FromSeconds(gameManager.playerController.playerStats.bestRun);
+        bestTime.text = string.Format("{0}", timespan.ToString(@"mm\:ss"));
         string formatString = "\n Armor = {0:.} \n \n Speed = {1:0.0} \n \n Damage = {2:0.0}";
         statsDisplay.text = string.Format(formatString, gameManager.playerController.playerStats.maxHP, gameManager.playerController.playerStats.baseMoveSpeed, gameManager.playerController.playerStats.baseDamage);
         if(gameManager.playerController.playerStats.baseMoveSpeed >= gameManager.playerController.playerStats.maxMoveSpeed)

@@ -19,4 +19,5 @@ public class Stats : ScriptableObject
     public float shotDelay;
     public int killCount;
     public float upgradePoints;
+    public float bestRun;
 }
