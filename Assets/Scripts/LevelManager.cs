@@ -36,5 +36,9 @@ public class LevelManager : MonoBehaviour
         confiner2D.m_BoundingShape2D = foundBoundingShape;
         gameManager.player.transform.position = GameObject.FindWithTag("Spawn").transform.position;
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        if(scene.name == "MainMenu")
+        {
+            gameManager.uIManager.startButton.Select();
+        }
     }
 }

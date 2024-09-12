@@ -22,10 +22,15 @@ public class PlayerController : MonoBehaviour
     private Transform[] firePoints = new Transform[2];
     [SerializeField]
     private GameObject projectile;
-    public InputActionAsset playerInputs;
-    private InputAction fireAction;
     public GameManager gameManager;
     public GameObject playerBoom;
+    private Vector2 aimDirection;
+    [Header("Input Variables")]
+    public bool isGamepadActive;
+    public InputActionAsset playerInputs;
+    public PlayerInput playerInput;
+    public InputAction fireAction;
+    public bool isPaused;
     [Header("Stats")]
     [SerializeField]
     public Stats playerStats;
@@ -47,13 +52,18 @@ public class PlayerController : MonoBehaviour
         hasFiredLeft = false;
         hasFiredRight = true;
         rb.velocity = Vector2.zero;
+        isPaused = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        CheckInputType();
         //Mouse input
-        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if(!isGamepadActive)
+        {
+            mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
         CheckForDeath();
     }
 
@@ -66,6 +76,36 @@ public class PlayerController : MonoBehaviour
             moveDirection = moveVector2;
         }
     }
+
+    void OnLook(InputValue lookValue)
+    {
+        if(isGamepadActive)
+        {
+            aimDirection = lookValue.Get<Vector2>();
+        }
+    }
+
+    void OnPause()
+    {
+        togglePause();
+    }
+
+    public void togglePause()
+    {
+        if(!isPaused)
+        {
+            gameManager.uIManager.SetPauseUI();
+            Time.timeScale = 0;
+            isPaused = true;
+        }
+        else if(isPaused)
+        {
+            gameManager.uIManager.SetUIGamePlay();
+            Time.timeScale = 1;
+            isPaused = false;
+        }
+    }
+
     private void FixedUpdate()
     {
         if(playerStats.isAlive)
@@ -74,11 +114,14 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(moveDirection.x * playerStats.moveSpeed, moveDirection.y * playerStats.moveSpeed);
             //weaponRb.velocity = new Vector2(moveDirection.x * playerStats.moveSpeed, moveDirection.y * playerStats.moveSpeed);
             activeWeapon.transform.position = this.transform.position;
-            Vector2 aimDirection = mousePosition - rb.position;
             
-            // This horrible looking math is how the character stays looking at the mouse point
+            if(!isGamepadActive)
+            {
+                aimDirection = mousePosition - rb.position;
+            }
+
             float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;
-            weaponRb.rotation = aimAngle;   
+            weaponRb.rotation = aimAngle;
 
             if(fireAction.IsPressed())
             {
@@ -115,6 +158,7 @@ public class PlayerController : MonoBehaviour
             activeBody = Instantiate(bodys[2], this.transform);
             activeWeapon = Instantiate(weapons[2], this.transform);
             firePoints[0] = activeWeapon.transform.GetChild(0);
+            fireForce = 50f;
         }
         playerStats.shotDelay = playerStats.baseShotDelay;
         playerStats.damage = playerStats.baseDamage;
@@ -142,7 +186,7 @@ public class PlayerController : MonoBehaviour
             activeBody = Instantiate(bodys[1], this.transform);
             activeWeapon = Instantiate(weapons[1], this.transform);
             firePoints[0] = activeWeapon.transform.GetChild(0);
-            playerStats.baseShotDelay = .5f;
+            playerStats.baseShotDelay = .33f;
             playerStats.baseDamage = 1f;
             playerStats.baseMoveSpeed = 5f;
         }
@@ -151,12 +195,13 @@ public class PlayerController : MonoBehaviour
             activeBody = Instantiate(bodys[2], this.transform);
             activeWeapon = Instantiate(weapons[2], this.transform);
             firePoints[0] = activeWeapon.transform.GetChild(0);
-            playerStats.baseShotDelay = .75f;
+            playerStats.baseShotDelay = .5f;
             playerStats.baseDamage = 1.25f;
-            playerStats.baseMoveSpeed = 4f;
+            playerStats.baseMoveSpeed = 4.5f;
+            fireForce = 50f;
         }
         playerStats.upgradePoints = 0;
-        playerStats.maxHP = 100;
+        playerStats.maxHP = 75;
         playerStats.shotDelay = playerStats.baseShotDelay;
         playerStats.damage = playerStats.baseDamage;
         playerStats.moveSpeed = playerStats.baseMoveSpeed;
@@ -213,5 +258,19 @@ public class PlayerController : MonoBehaviour
             Destroy(particles,.5f);
         }
     }
-    
+
+    void CheckInputType()
+    {
+        foreach (InputDevice device in playerInput.devices)
+        {
+            if (device is Mouse || device is Keyboard)
+            {
+                isGamepadActive = false;
+            }
+            else if (device is Gamepad)
+            {
+                isGamepadActive = true;
+            }
+        }   
+    }    
 }

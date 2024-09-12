@@ -66,6 +66,8 @@ public class GameManager : MonoBehaviour
     {
         player.SetActive(false);
         uIManager.SetUIMainMenu();
+        soundManager.music.clip = soundManager.mainMusic;
+        soundManager.music.Play();
     }
 
     void Gameplay()
@@ -76,6 +78,8 @@ public class GameManager : MonoBehaviour
         killCount = 0;
         playerController.playerStats.killCount = 0;
         uIManager.SetUIGamePlay();
+        soundManager.music.clip = soundManager.gameMusic;
+        soundManager.music.Play();
     }
 
     public void Save()
@@ -120,7 +124,7 @@ public class GameManager : MonoBehaviour
         }
         if(stat == "Damage")
         {
-            playerController.playerStats.baseDamage += .1f;
+            playerController.playerStats.baseDamage += .25f;
         }
         if(stat == "Speed")
         {
@@ -138,8 +142,23 @@ public class GameManager : MonoBehaviour
 
     public void CalculateResults()
     {
-        roundBonus = playerController.playerStats.currentHP;
-        totalEarned = (killCount * 5) + runTime + -roundBonus;
+        if(playerController.playerStats.currentHP == 0)
+        {
+            roundBonus = 1f;
+        }
+        else if(playerController.playerStats.currentHP < 0 && playerController.playerStats.currentHP > -5)
+        {
+            roundBonus = 1.5f;
+        }
+        else if(playerController.playerStats.currentHP < -5 && playerController.playerStats.currentHP > -15)
+        {
+            roundBonus = 1.75f;
+        }
+        else if(playerController.playerStats.currentHP < -15)
+        {
+            roundBonus = 2f;
+        }
+        totalEarned = ((killCount * 5) + runTime) * roundBonus;
         playerController.playerStats.upgradePoints += totalEarned;
     }
 }

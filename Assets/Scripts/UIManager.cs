@@ -13,13 +13,22 @@ public class UIManager : MonoBehaviour
     public GameObject upgradeMenu;
     public GameObject runEndMenu;
     public GameObject creditsMenu;
+    public GameObject pauseMenu;
     public Button loadButton;
+    [Header("Buttons")]
+    public Button startButton;
+    public Button shipSelectButton;
+    public Button upgradesButton;
+    public Button launchButton;
+    public Button resumeButton;
+    public Button creditsBackButton;
     [Header("Upgrades Menu")]
     public TextMeshProUGUI statsDisplay;
     public Button armorUpButton;
     public Button damageUpButton;
     public Button speedUpButton;
     public TextMeshProUGUI pointsDisplay;
+    public bool canUpgrade;
     [Header("HUD")]
     public GameObject hUDObject;
     public TextMeshProUGUI healthUI;
@@ -73,6 +82,8 @@ public class UIManager : MonoBehaviour
 
     public void SetUIMainMenu()
     {
+        startButton.Select();
+        pauseMenu.SetActive(false);
         hUDObject.SetActive(false);
         startMenu.SetActive(false);
         upgradeMenu.SetActive(false);
@@ -81,30 +92,39 @@ public class UIManager : MonoBehaviour
         mainMenu.SetActive(true);
         gameManager.soundManager.music.clip = gameManager.soundManager.mainMusic;
         gameManager.soundManager.music.Play();
+        Time.timeScale = 1f;
     }
 
     public void SetUIStartMenu()
     {
+        shipSelectButton.Select();
+        pauseMenu.SetActive(false);
         creditsMenu.SetActive(false);
         hUDObject.SetActive(false);
         upgradeMenu.SetActive(false);
         runEndMenu.SetActive(false);
         mainMenu.SetActive(false);
         startMenu.SetActive(true);
+        Time.timeScale = 1f;
     }
 
     public void SetUIUpgradeMenu()
     {
+        launchButton.Select();
+        pauseMenu.SetActive(false);
         creditsMenu.SetActive(false);
         hUDObject.SetActive(false);
         startMenu.SetActive(false);
         runEndMenu.SetActive(false);
         mainMenu.SetActive(false);
         upgradeMenu.SetActive(true);
+        Time.timeScale = 1f;
     }
 
     public void SetUIRunEndMenu()
     {
+        upgradesButton.Select();
+        pauseMenu.SetActive(false);
         creditsMenu.SetActive(false);
         hUDObject.SetActive(false);
         startMenu.SetActive(false);
@@ -112,35 +132,50 @@ public class UIManager : MonoBehaviour
         mainMenu.SetActive(false);
         runEndMenu.SetActive(true);
         gameManager.CalculateResults();
-        gameManager.soundManager.music.clip = gameManager.soundManager.mainMusic;
-        gameManager.soundManager.music.Play();
+        Time.timeScale = .5f;
+    }
+
+    public void SetPauseUI()
+    {
+        resumeButton.Select();
+        creditsMenu.SetActive(false);
+        hUDObject.SetActive(false);
+        startMenu.SetActive(false);
+        upgradeMenu.SetActive(false);
+        mainMenu.SetActive(false);
+        runEndMenu.SetActive(false);
+        pauseMenu.SetActive(true);
+        
     }
 
     public void SetUIGamePlay()
     {
+        pauseMenu.SetActive(false);
         creditsMenu.SetActive(false);
         startMenu.SetActive(false);
         upgradeMenu.SetActive(false);
         runEndMenu.SetActive(false);
         mainMenu.SetActive(false);
         hUDObject.SetActive(true);
-        gameManager.soundManager.music.clip = gameManager.soundManager.gameMusic;
-        gameManager.soundManager.music.Play();
+        Time.timeScale = 1f;
     }
 
     public void SetUICredits()
     {
+        creditsBackButton.Select();
+        pauseMenu.SetActive(false);
         startMenu.SetActive(false);
         upgradeMenu.SetActive(false);
         runEndMenu.SetActive(false);
         mainMenu.SetActive(false);
         hUDObject.SetActive(false);
         creditsMenu.SetActive(true);
+        Time.timeScale = 1f;
     }
 
     public void UpdateStats()
     {
-        string formatString = "\n Armor = {0} \n \n Speed = {1} \n \n Damage = {2}";
+        string formatString = "\n Armor = {0:.} \n \n Speed = {1:0.0} \n \n Damage = {2:0.0}";
         statsDisplay.text = string.Format(formatString, gameManager.playerController.playerStats.maxHP, gameManager.playerController.playerStats.baseMoveSpeed, gameManager.playerController.playerStats.baseDamage);
         if(gameManager.playerController.playerStats.baseMoveSpeed >= gameManager.playerController.playerStats.maxMoveSpeed)
         {
@@ -161,7 +196,7 @@ public class UIManager : MonoBehaviour
         var timespan = TimeSpan.FromSeconds(gameManager.runTime);
         runTimeText.text = string.Format("Run Time = {0}", timespan.ToString(@"mm\:ss"));
         killCountText.text = string.Format("Kills = {0}",gameManager.killCount);
-        bonusText.text = string.Format("Bonus = {0}", -gameManager.roundBonus);
+        bonusText.text = string.Format("Bonus Multiplyer = {0}", gameManager.roundBonus);
         totalText.text = string.Format("TOTAL = {0:.}",gameManager.totalEarned);
     }
 
@@ -172,13 +207,20 @@ public class UIManager : MonoBehaviour
             speedUpButton.interactable = false;
             armorUpButton.interactable = false;
             damageUpButton.interactable = false;
+            canUpgrade = false;
         }
         else
         {
             speedUpButton.interactable = true;
             armorUpButton.interactable = true;
             damageUpButton.interactable = true;
+            canUpgrade = true;
         }
+    }
+
+    public void CheckUpgrdes()
+    {
+        launchButton.Select();
     }
 
     
